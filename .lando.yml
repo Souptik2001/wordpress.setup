@@ -7,8 +7,8 @@ config:
   database: mariadb
   xdebug: true
   config:
-    php: .lando/php.ini
-    vhosts: .lando/nginx.conf
+    php: ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/php.ini
+    vhosts: ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/nginx.conf
 services:
   rediscache:
     type: redis
@@ -26,8 +26,8 @@ services:
         PHP_IDE_CONFIG: "serverName=appserver"
         PROFILER_OUTPUT_DIR: "profiler-output" # If changing this value, change in .gitignore also
       volumes:
-        - '~/wordpress/DO-NOT-DELETE/wordpress-core:/app/wordpress'
-        - '.lando/wp-cli.yml:/wp-cli.yml'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core:/app/wordpress'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/wp-cli.yml:/wp-cli.yml'
         - './mu-plugins:/app/wordpress/wp-content/mu-plugins'
         - './client-mu-plugins:/app/wordpress/wp-content/client-mu-plugins'
         - './plugins:/app/wordpress/wp-content/plugins'
