@@ -14,4 +14,4 @@ git clone git@github.com:Souptik2001/wordpress.setup.git wordpress.setup-DO-NOT-
 
 ## TO-DO:
 
-[ ] Ability to add separate `wp-config.php` files for different sites.
+- [ ] Ability to add separate `wp-config.php` files for different sites.
