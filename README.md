@@ -1,3 +1,5 @@
+# My WordPress Lando Setup ~ Souptik Datta
+
 ## Steps to set-up:
 
 - Clone this repo(preferably in your home directory) using the command:
@@ -10,8 +12,12 @@ git clone git@github.com:Souptik2001/wordpress.setup.git wordpress.setup-DO-NOT-
 ```
 - Now you can just run `lando start` here only and that's it you have a WordPress site ready.
 - But if you are more into development you most probably will have the wp-content folder's content already.
-- So, just where you have `wp-content` folder's content run copy this `.lando.yml` file and run `lando start` and that's it. DONE!
+- So, in a different folder copy the `.lando.yml`, `wp-content`(fallback), `.lando` files.
+- And now you can get your's `wp-content` folder and replace this default `wp-content` folder.
+- Now run `lando start`.
+- Here only you will get a `wp-config.php` file which you can edit as per you wish.
 
 ## TO-DO:
 
-- [ ] Ability to add separate `wp-config.php` files for different sites.
+- [x] Ability to add separate `wp-config.php` files for different sites.
+- [ ] Add a shell script to complete the setup following the above steps.
