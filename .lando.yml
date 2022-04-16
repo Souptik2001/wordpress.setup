@@ -1,4 +1,4 @@
-name: awesomeApp ######## ⚠️PLEASE CHANGE THIS TO YOUR AWESOME APP's NAME!⚠️
+name: ${SD_WP_LANDO_APP_NAME} ######## ⚠️PLEASE CHANGE THIS TO YOUR AWESOME APP's NAME!⚠️
 recipe: wordpress
 config:
   via: nginx
