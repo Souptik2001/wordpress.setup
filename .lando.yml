@@ -7,8 +7,8 @@ config:
   database: mariadb
   xdebug: true
   config:
-    php: ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/php.ini
-    vhosts: ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/nginx.conf
+    php: .lando/php.ini
+    vhosts: .lando/nginx.conf
 services:
   rediscache:
     type: redis
@@ -26,13 +26,29 @@ services:
         PHP_IDE_CONFIG: "serverName=appserver"
         PROFILER_OUTPUT_DIR: "profiler-output" # If changing this value, change in .gitignore also
       volumes:
+        # LINK CORE FILES. DON'T LINK THE ENTIRE DIRECTORY, BECAUSE THAT CAN CAUSE MANY IMPORTANT CORE LOCAL FILES TO BE OVERRIDDEN.
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-admin:/app/wordpress/wp-admin'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-includes:/app/wordpress/wp-includes'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core:/app/wordpress/index.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-activate.php:/app/wordpress/wp-activate.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-blog-header.php:/app/wordpress/wp-blog-header.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-comments-post.php:/app/wordpress/wp-comments-post.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-cron.php:/app/wordpress/wp-cron.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-links-opml.php:/app/wordpress/wp-links-opml.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-load.php:/app/wordpress/wp-load.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-login.php:/app/wordpress/wp-login.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-mail.php:/app/wordpress/wp-mail.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-settings.php:/app/wordpress/wp-settings.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-signup.php:/app/wordpress/wp-signup.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-trackback.php:/app/wordpress/wp-trackback.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/xmlrpc.php:/app/wordpress/xmlrpc.php'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core:/app/wordpress'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando/wp-cli.yml:/wp-cli.yml'
-        - './mu-plugins:/app/wordpress/wp-content/mu-plugins'
-        - './client-mu-plugins:/app/wordpress/wp-content/client-mu-plugins'
-        - './plugins:/app/wordpress/wp-content/plugins'
-        - './themes:/app/wordpress/wp-content/themes'
-        - './uploads:/app/wordpress/wp-content/uploads'
+        # LINK LANDO CONFIG FILES.
+        - '.lando/wp-cli.yml:/wp-cli.yml'
+        # LINK WP-CONTENT DIRECTORY.
+        - './wp-content:/app/wordpress/wp-content'
+        # LINK WP-CONFIG.PHP FILE.
+        - './wp-config.php:/app/wordpress/wp-config.php'
     # Not needed because we are creating having wordpress-core already downloaded.
     # build:
     #   - wp core download --version=5.8.3 --force --skip-content
@@ -55,9 +71,9 @@ services:
         if ! wp core is-installed; then
           wp core install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN \
             --title=$LANDO_APP_NAME \
-            --admin_user=rtcamp \
-            --admin_password=goodwork \
-            --admin_email=lando@rtcamp.com \
+            --admin_user=admin \
+            --admin_password=admin \
+            --admin_email=admin@souptik2001.com \
             --skip-email
           wp plugin activate query-monitor
         fi
