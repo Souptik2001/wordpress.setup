@@ -1,4 +1,4 @@
-name: ${SD_WP_LANDO_APP_NAME} ######## ⚠️PLEASE CHANGE THIS TO YOUR AWESOME APP's NAME!⚠️
+name: SD_WP_LANDO_APP_NAME ######## ⚠️PLEASE CHANGE THIS TO YOUR AWESOME APP's NAME!⚠️
 recipe: wordpress
 config:
   via: nginx
@@ -29,7 +29,7 @@ services:
         # LINK CORE FILES. DON'T LINK THE ENTIRE DIRECTORY, BECAUSE THAT CAN CAUSE MANY IMPORTANT CORE LOCAL FILES TO BE OVERRIDDEN.
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-admin:/app/wordpress/wp-admin'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-includes:/app/wordpress/wp-includes'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core:/app/wordpress/index.php'
+        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/index.php:/app/wordpress/index.php'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-activate.php:/app/wordpress/wp-activate.php'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-blog-header.php:/app/wordpress/wp-blog-header.php'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core/wp-comments-post.php:/app/wordpress/wp-comments-post.php'

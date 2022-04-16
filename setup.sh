@@ -50,7 +50,10 @@ git clone $3 wp-content
 
 # Set envionment variables # This needs to be exported which this needs to be unique.
 
-export SD_WP_LANDO_APP_NAME=$1
+# -i -> Replace the contents in file.
+# -n -> Don't print the final output in stdout
+
+sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i -n $project_folder'/.lando.yml'
 
 # Run `lando start`
 
