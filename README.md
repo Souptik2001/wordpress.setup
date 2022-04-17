@@ -10,6 +10,13 @@
   - `Docker`.
   - `Lando`.
   - `git`.
+  - And a little knowledge about `docker`, `lando` and obviously `WordPress(🤔)` is good.
+
+## Credentials:
+
+After creating a site:
+- Your site will have a username and password(both same) of - `admin`.
+- And the database name will be `wordpress`. And the username will be `wordpress` and password will be also `wordpress`.
 
 ## Steps to set-up:
 
