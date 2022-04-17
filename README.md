@@ -2,6 +2,8 @@
 
 **Many folder structure conventions are my personal choice. If you want to edit the folder structure then make sure to change the places where this folder structure is used(mainly in the `.lando.yml` and `setup.sh` files), otherwise the setup will break.**
 
+**Along with the super easy setup one more benefit you will get is that wordpress-core will be present only once, yet providing the flexibility to edit customizable files like `wp-config.php`, `wp-contents` directory, server and php configuration files, etc.**
+
 ## Before Using:
 
 - Before using my this setup be sure you have the following things installed (External dependencies):
