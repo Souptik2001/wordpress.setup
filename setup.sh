@@ -53,7 +53,7 @@ git clone $3 wp-content
 # -i -> Replace the contents in file.
 # -n -> Don't print the final output in stdout
 
-sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i -n $project_folder'/.lando.yml'
+sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i $project_folder'/.lando.yml'
 
 # Run `lando start`
 
