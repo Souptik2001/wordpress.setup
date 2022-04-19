@@ -4,12 +4,20 @@
 ## Usage check
 
 if (( $# < 2 )); then
-	echo "Inappropriate arguments."
+	echo "ERROR : Inappropriate arguments."
 	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
 	exit 128
 fi
 
 # Check if the supplied path exixts - if not exit.
+
+if [[ ! -d "$2" ]]
+then
+    echo "ERROR : $2 does not exists on your filesystem."
+	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
+	exit 128
+fi
+
 
 ###############################################
 
