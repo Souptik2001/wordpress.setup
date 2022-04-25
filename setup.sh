@@ -18,7 +18,7 @@ then
 	exit 128
 fi
 
-if [[ ! -d "~/wordpress/wordpress.setup-DO-NOT-DELETE/" ]]
+if [[ ! -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/ ]]
 then
 	echo "ERROR : The folder ~/wordpress/wordpress.setup-DO-NOT-DELETE/ doesn't exists."
 	echo "Make sure that folder is present and all the nessesary components are present inside that as it will be used."
@@ -66,7 +66,12 @@ cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-c
 
 cd $project_folder
 
-git clone $3 wp-content
+if (( $# > 2 )); then
+	git clone $3 wp-content
+else
+	echo "INFO : NO wp-content directory GIT URL provided. Copying the default wp-content directory."
+	cp -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-content ./wp-content
+fi
 
 # If clone fails and `wp-content` is not present then copy this `wp-content` there.
 
@@ -87,4 +92,5 @@ end=`date +%s`
 
 runtime=$((end-start))
 
+echo "Your project is ready at $project_folder."
 echo "You see it's done and it took only $runtime seconds! Enjoy! ~ Souptik Datta"
