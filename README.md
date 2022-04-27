@@ -54,3 +54,8 @@ git clone git@github.com:Souptik2001/wordpress.setup.git ~/wordpress/wordpress.s
 - [x] Ability to add separate `wp-config.php` files for different sites.
 - [x] Add a shell script to complete the setup following the above steps ( only contains basic level of error handling ).
 - [ ] Add far better error handling in the shell script.
+- [ ] The WordPress directory in the project directory should have a only read link to the original WordPress directory so that we get autocompletion.( High Priority)
+- [ ] In the project directory there should be a hard symlink to the wordpress core and the permissions should be only read as written in the above point.
+- [ ] The project should use that hard-symlink as the wordpress core( because that from one project user does't upgrade WordPress core ).
+- [ ] Because of the above point you will not be able to upgrade WordPress from the admin dashboard. For that we have to somehow select that from command line utility. Keep some versions of the wordpress core in the repo. And user can select the one they wish.
+- [ ] Check why the original wp-config is changing and not the copied one.
