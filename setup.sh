@@ -86,6 +86,8 @@ sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i $project_folder'/.lando.yml'
 
 lando start
 
+ln -s ~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core $project_folder'/wordpress'
+
 ###############################################
 
 end=`date +%s`
