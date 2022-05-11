@@ -49,13 +49,23 @@ services:
         - './wp-content:/app/wordpress/wp-content'
         # LINK WP-CONFIG.PHP FILE.
         - './wp-config.php:/app/wordpress/wp-config.php'
+    # Have a look at this for better idea of build states:
     # Not needed because we are creating having wordpress-core already downloaded.
     # build:
     #   - wp core download --version=5.8.3 --force --skip-content
     run:
       - sleep 2 # For some reason, we have to wait at least a second till database is up.
-      - | # Create salts
-        wp config shuffle-salts
+      - | # Create WordPress config file and add necessary constants and custom config. Currently this will not work because the volume mapping occurs before the file is created.🐛🐛
+        if test -f "$LANDO_WEBROOT/wp-config.php"; then
+          echo "Config file already exists."
+        else
+        wp config create --dbhost=database --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbprefix=wp_ --force --extra-php <<PHP
+        \$redis_server = array(
+          'host'     => 'rediscache',
+          'port'     => 6379,
+        );
+        PHP
+        fi
       - wp config set WP_DEBUG true --raw
       - wp config set WP_DEBUG_LOG true --raw
       - wp config set WP_DEBUG_DISPLAY true --raw

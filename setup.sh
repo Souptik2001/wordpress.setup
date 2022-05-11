@@ -59,8 +59,7 @@ fi
 
 cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando.yml "$project_folder/.lando.yml"
 cp -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando "$project_folder/.lando"
-cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-config.php"
-
+# cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-config.php"
 
 # Clone the repo with the name `wp-content`.
 
@@ -81,6 +80,19 @@ fi
 # -n -> Don't print the final output in stdout
 
 sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i $project_folder'/.lando.yml'
+
+# Create the salts.
+
+cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core
+
+wp config create --config-file=$project_folder/wp-config.php --dbhost=database --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbprefix=wp_ --skip-check --extra-php <<PHP
+\$redis_server = array(
+	'host'     => 'rediscache',
+	'port'     => 6379,
+);
+PHP
+
+cd $project_folder
 
 # Run `lando start`
 
