@@ -85,3 +85,6 @@ tooling:
     cmd:
       - appserver: /app/.lando/xdebug.sh
     user: root
+proxy:
+  appserver_nginx:
+    - "*.{{ app }}.lndo.site"
