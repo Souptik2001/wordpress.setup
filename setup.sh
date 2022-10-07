@@ -35,6 +35,21 @@ start=`date +%s`
 ###############################################
 ## Main Process
 
+# Cleanup..🧹 - Clean up any existing previous template files
+
+cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating
+
+if [[ -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/ ]]
+then
+	rm -r tmp
+fi
+
+mkdir tmp
+
+# Run the templating script to generate the files..
+
+python template.py --appName=$1 --php=7.4 --wp=5.9 --node=16.x
+
 # Move to the home directory
 
 cd ~
@@ -57,9 +72,12 @@ fi
 
 # Create copy the `.lando.yml`, `wp-config.php`, `.lando` to that folder.
 
-cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando.yml "$project_folder/.lando.yml"
+cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating/tmp/.lando.yml "$project_folder/.lando.yml"
 cp -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando "$project_folder/.lando"
-# cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-config.php"
+cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-config.php"
+
+# Clean up..🧹 - Remove the created files
+rm -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating/tmp
 
 # Clone the repo with the name `wp-content`.
 
@@ -74,12 +92,16 @@ fi
 
 # If clone fails and `wp-content` is not present then copy this `wp-content` there.
 
+############ Not needed here now, as templating is handled by Jinja.
+
 # Set envionment variables # This needs to be exported which this needs to be unique.
 
 # -i -> Replace the contents in file.
 # -n -> Don't print the final output in stdout
 
-sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i $project_folder'/.lando.yml'
+# sed '1 s/SD_WP_LANDO_APP_NAME/'$1'/' -i $project_folder'/.lando.yml'
+
+############
 
 # Create the salts.
 
