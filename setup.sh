@@ -27,7 +27,7 @@ fi
 
 project_folder="$2/$1"
 
-if [[ -d project_folder ]]
+if [[ -d $project_folder ]]
 then
 	echo "ERROR : The project already exists at ( $project_folder )."
 	echo "Please remove the already existing project and try again."
@@ -48,7 +48,7 @@ start=`date +%s`
 
 cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating
 
-if [[ -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/ ]]
+if [[ -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/tmp ]]
 then
 	rm -r tmp
 fi
