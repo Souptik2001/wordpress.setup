@@ -71,12 +71,7 @@ services:
         fi
       - | # Let's check if WordPress is not installed, then install it
         if ! wp core is-installed; then
-          wp core install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN \
-            --title=$LANDO_APP_NAME \
-            --admin_user=admin \
-            --admin_password=admin \
-            --admin_email=admin@souptik.dev \
-            --skip-email
+          {{ core_install_command }}
           wp plugin activate query-monitor
         fi
 tooling:
@@ -85,3 +80,7 @@ tooling:
     cmd:
       - appserver: /app/.lando/xdebug.sh
     user: root
+proxy:
+  appserver_nginx:
+    - "{{ app }}.lndo.site"
+    - "*.{{ app }}.lndo.site"

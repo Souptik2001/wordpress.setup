@@ -25,6 +25,15 @@ then
 	exit 128
 fi
 
+project_folder="$2/$1"
+
+if [[ -d project_folder ]]
+then
+	echo "ERROR : The project already exists at ( $project_folder )."
+	echo "Please remove the already existing project and try again."
+	exit 128
+fi
+
 
 ###############################################
 
@@ -48,7 +57,7 @@ mkdir tmp
 
 # Run the templating script to generate the files..
 
-python template.py --appName=$1 --php=7.4 --wp=5.9 --node=16.x
+python template.py --appName=$1 --php=7.4 --wp=5.9 --node=16.x --multisite=yes --multisiteType=subdirectory
 
 # Move to the home directory
 
@@ -57,8 +66,6 @@ cd ~
 # Create a new folder in the supplied path named `name_of_the_project`
 
 # HELP: This expression is used to remove trailing slash from a string - `${var_name%/}`
-
-project_folder="$2/$1"
 
 echo " Project folder is being created at location - $project_folder"
 mkdir "$project_folder"
@@ -74,7 +81,7 @@ fi
 
 cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating/tmp/.lando.yml "$project_folder/.lando.yml"
 cp -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/.lando "$project_folder/.lando"
-cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/wp-config.php "$project_folder/wp-config.php"
+cp ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating/tmp/wp-config.php "$project_folder/wp-config.php"
 
 # Clean up..🧹 - Remove the created files
 rm -r ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating/tmp
