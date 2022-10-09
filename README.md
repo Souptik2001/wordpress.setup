@@ -9,8 +9,8 @@
 - Before using my this setup be sure you have the following things installed (External dependencies):
   - `Docker`.
   - `Lando`.
-  - `git`.
-  - And a little knowledge about `docker`, `lando` and obviously `WordPress(🤔)` is good.
+  - `Git`.
+  - And obviously a little knowledge about `WordPress(🤔)` is good.
 
 ## Credentials:
 

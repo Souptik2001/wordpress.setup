@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 parser=argparse.ArgumentParser()
 
 defaultPHP = "8.0"
-defaultWP = "6.0.2"
+defaultWP = "5.9"
 defaultNode = "16.x"
 
 parser.add_argument("--appName", help="Website/application name",required=True)
@@ -17,9 +17,9 @@ parser.add_argument("--multisiteType", help="Multisite type", default=defaultNod
 
 args=parser.parse_args()
 
-phpVer = "8.0" if (not (args.php and args.php.strip())) else args.php
-wpVer = "6.0.2" if (not (args.wp and args.wp.strip())) else args.wp
-nodeVer = "16.x" if (not (args.node and args.node.strip())) else args.node
+phpVer = defaultPHP if (not (args.php and args.php.strip())) else args.php
+wpVer = defaultWP if (not (args.wp and args.wp.strip())) else args.wp
+nodeVer = defaultNode if (not (args.node and args.node.strip())) else args.node
 
 
 environment = Environment(loader=FileSystemLoader("templates/"))
@@ -27,11 +27,12 @@ environment = Environment(loader=FileSystemLoader("templates/"))
 # Lando config file
 landoConfigTemplate = environment.get_template(".lando.yml.j2")
 
+coreInstallCommand = "wp core install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email"
+queryMonitorInstallCommand = "wp plugin install query-monitor --activate"
 
-coreInstallCommand = "wp core multisite-install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email --skip-config"
-
-if args.multisite and args.multisite == "no":
-	coreInstallCommand = "wp core install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email"
+if args.multisite and args.multisite == "yes":
+	coreInstallCommand = "wp core multisite-install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email --skip-config"
+	queryMonitorInstallCommand = "wp plugin install query-monitor --activate-network"
 
 filename = f"./tmp/.lando.yml"
 landoConfigContent = landoConfigTemplate.render(
@@ -39,7 +40,8 @@ landoConfigContent = landoConfigTemplate.render(
 	php=f"{phpVer}",
 	wp=f"{wpVer}",
 	node=f"{nodeVer}",
-	core_install_command=coreInstallCommand
+	core_install_command=coreInstallCommand,
+	query_monitor_install_command=queryMonitorInstallCommand
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(landoConfigContent)

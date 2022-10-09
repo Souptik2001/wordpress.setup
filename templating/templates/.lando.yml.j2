@@ -72,7 +72,7 @@ services:
       - | # Let's check if WordPress is not installed, then install it
         if ! wp core is-installed; then
           {{ core_install_command }}
-          wp plugin activate query-monitor
+          {{ query_monitor_install_command }}
         fi
 tooling:
   xdebug:

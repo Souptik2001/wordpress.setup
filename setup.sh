@@ -44,6 +44,84 @@ start=`date +%s`
 ###############################################
 ## Main Process
 
+
+# Read command line options
+ARGUMENT_LIST=(
+    "wp"
+    "php"
+    "node"
+	"multisite"
+	"multisitetype"
+)
+
+
+
+# read arguments
+opts=$(getopt \
+    --longoptions "$(printf "%s:," "${ARGUMENT_LIST[@]}")" \
+    --name "$(basename "$0")" \
+    --options "" \
+    -- "$@"
+)
+
+eval set --$opts
+
+while true; do
+    case "$1" in
+    --wp)
+        shift
+        wp=$1
+        ;;
+    --php)
+        shift
+        php=$1
+        ;;
+    --node)
+        shift
+        node=$1
+        ;;
+	--multisite)
+		shift
+		multisite=$1
+		;;
+	--multisitetype)
+		shift
+		multisitetype=$1
+		;;
+      --)
+        shift
+        break
+        ;;
+    esac
+    shift
+done
+
+if [ -z "$multisite" ]
+then
+    multisite="no"
+fi
+
+if [ -z "$multisitetype" ]
+then
+    multisitetype="subdomain"
+fi
+
+# Download WordPress core
+
+cd ~/wordpress/wordpress.setup-DO-NOT-DELETE
+
+if [[ ! -d "wordpress-core-$wp" ]]
+then
+	wget "https://wordpress.org/wordpress-$wp.tar.gz"
+	if [ $? -ne 0 ]; then
+		echo "ERROR: WordPress core download error."
+		exit 128
+	fi
+	tar -xzf "wordpress-$wp.tar.gz"
+	rm "wordpress-$wp.tar.gz"
+	mv wordpress "wordpress-core-$wp"
+fi
+
 # Cleanup..🧹 - Clean up any existing previous template files
 
 cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating
@@ -57,7 +135,12 @@ mkdir tmp
 
 # Run the templating script to generate the files..
 
-python template.py --appName=$1 --php=7.4 --wp=5.9 --node=16.x --multisite=yes --multisiteType=subdirectory
+python template.py --appName=$1 --php=$php --wp=$wp --node=$node --multisite=$multisite --multisiteType=$multisitetype
+
+if [ $? -ne 0 ]; then
+	echo "ERROR: Templating script error."
+	exit 128
+fi
 
 # Move to the home directory
 
@@ -136,4 +219,5 @@ end=`date +%s`
 runtime=$((end-start))
 
 echo "Your project is ready at $project_folder."
-echo "You see it's done and it took only $runtime seconds! Enjoy! ~ Souptik Datta"
+echo "You see it's done and it took only $runtime seconds! Enjoy!"
+echo -e "Visit \033[1mhttps://souptik.dev\033[0m for more projects like this.👋"
