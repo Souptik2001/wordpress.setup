@@ -219,4 +219,5 @@ end=`date +%s`
 runtime=$((end-start))
 
 echo "Your project is ready at $project_folder."
-echo "You see it's done and it took only $runtime seconds! Enjoy! ~ Souptik Datta"
+echo "You see it's done and it took only $runtime seconds! Enjoy!"
+echo -e "Visit \033[1mhttps://souptik.dev\033[0m for more projects like this.👋"
