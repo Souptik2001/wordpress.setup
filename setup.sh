@@ -106,6 +106,22 @@ then
     multisitetype="subdomain"
 fi
 
+# Download WordPress core
+
+cd ~/wordpress/wordpress.setup-DO-NOT-DELETE
+
+if [[ ! -d "wordpress-core-$wp" ]]
+then
+	wget "https://wordpress.org/wordpress-$wp.tar.gz"
+	if [ $? -ne 0 ]; then
+		echo "ERROR: WordPress core download error."
+		exit 128
+	fi
+	tar -xzf "wordpress-$wp.tar.gz"
+	rm "wordpress-$wp.tar.gz"
+	mv wordpress "wordpress-core-$wp"
+fi
+
 # Cleanup..🧹 - Clean up any existing previous template files
 
 cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/templating
