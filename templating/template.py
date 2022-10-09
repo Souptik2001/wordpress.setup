@@ -28,9 +28,11 @@ environment = Environment(loader=FileSystemLoader("templates/"))
 landoConfigTemplate = environment.get_template(".lando.yml.j2")
 
 coreInstallCommand = "wp core install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email"
+queryMonitorInstallCommand = "wp plugin install query-monitor --activate"
 
 if args.multisite and args.multisite == "yes":
 	coreInstallCommand = "wp core multisite-install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email --skip-config"
+	queryMonitorInstallCommand = "wp plugin install query-monitor --activate-network"
 
 filename = f"./tmp/.lando.yml"
 landoConfigContent = landoConfigTemplate.render(
@@ -38,7 +40,8 @@ landoConfigContent = landoConfigTemplate.render(
 	php=f"{phpVer}",
 	wp=f"{wpVer}",
 	node=f"{nodeVer}",
-	core_install_command=coreInstallCommand
+	core_install_command=coreInstallCommand,
+	query_monitor_install_command=queryMonitorInstallCommand
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(landoConfigContent)
