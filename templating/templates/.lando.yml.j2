@@ -27,21 +27,6 @@ services:
         PROFILER_OUTPUT_DIR: "profiler-output" # If changing this value, change in .gitignore also
       volumes:
         # LINK CORE FILES. DON'T LINK THE ENTIRE DIRECTORY, BECAUSE THAT CAN CAUSE MANY IMPORTANT CORE LOCAL FILES TO BE OVERRIDDEN.
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-admin:/app/wordpress/wp-admin'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-includes:/app/wordpress/wp-includes'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/index.php:/app/wordpress/index.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-activate.php:/app/wordpress/wp-activate.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-blog-header.php:/app/wordpress/wp-blog-header.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-comments-post.php:/app/wordpress/wp-comments-post.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-cron.php:/app/wordpress/wp-cron.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-links-opml.php:/app/wordpress/wp-links-opml.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-load.php:/app/wordpress/wp-load.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-login.php:/app/wordpress/wp-login.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-mail.php:/app/wordpress/wp-mail.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-settings.php:/app/wordpress/wp-settings.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-signup.php:/app/wordpress/wp-signup.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/wp-trackback.php:/app/wordpress/wp-trackback.php'
-        - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}/xmlrpc.php:/app/wordpress/xmlrpc.php'
         - '~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-{{ wp }}:/app/wordpress'
         # LINK LANDO CONFIG FILES.
         - '.lando/wp-cli.yml:/wp-cli.yml'
