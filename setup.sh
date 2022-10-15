@@ -106,6 +106,13 @@ then
     multisitetype="subdomain"
 fi
 
+## Had to define default WP version here because this is required in other parts of this script also other than just the python line.
+## If this is changed then the value of defaultWP in the `template.py` script also needs to be changed.
+if [ -z "$wp" ]
+then
+    wp="6.0.2"
+fi
+
 # Download WordPress core
 
 cd ~/wordpress/wordpress.setup-DO-NOT-DELETE
@@ -117,7 +124,7 @@ then
 		echo "ERROR: WordPress core download error."
 		exit 128
 	fi
-	tar -xzf "wordpress-$wp.tar.gz"
+	tar -xf "wordpress-$wp.tar.gz"
 	rm "wordpress-$wp.tar.gz"
 	mv wordpress "wordpress-core-$wp"
 fi
@@ -195,22 +202,13 @@ fi
 
 # Create the salts.
 
-cd ~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core
-
-wp config create --config-file=$project_folder/wp-config.php --dbhost=database --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbprefix=wp_ --skip-check --extra-php <<PHP
-\$redis_server = array(
-	'host'     => 'rediscache',
-	'port'     => 6379,
-);
-PHP
-
 cd $project_folder
 
 # Run `lando start`
 
 lando start
 
-ln -s ~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core $project_folder'/wordpress'
+ln -s ~/wordpress/wordpress.setup-DO-NOT-DELETE/wordpress-core-"$wp" $project_folder'/wordpress'
 
 ###############################################
 

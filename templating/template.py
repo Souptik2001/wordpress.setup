@@ -5,7 +5,8 @@ from jinja2 import Environment, FileSystemLoader
 parser=argparse.ArgumentParser()
 
 defaultPHP = "8.0"
-defaultWP = "5.9"
+# If this is changed then the default WP version of the setup.sh is also to be changed.
+defaultWP = "6.0.2"
 defaultNode = "16.x"
 
 parser.add_argument("--appName", help="Website/application name",required=True)
