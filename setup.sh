@@ -3,62 +3,39 @@
 ###############################################
 ## Usage check
 
-if (( $# < 2 )); then
-	echo "ERROR : Inappropriate arguments."
-	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
-	exit 128
-fi
+usage() {
+	echo -e '
+========== HELP MENU ==========
 
-# Check if the supplied path exixts - if not exit.
+Usage: \033[1msetup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]\033[0m
 
-if [[ ! -d "$2/" ]]
-then
-    echo "ERROR : $2 does not exists on your filesystem."
-	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
-	exit 128
-fi
+Arguments:
+--wp : WordPress version.
+--php: PHP version.
+--node: Node version.
+--multisite: Whether to create multisite or single site. yes OR no.
+--multisitetype: Type of multisite. subdomain OR subdirectory.
+--help: Display this help menu.
 
-if [[ ! -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/ ]]
-then
-	echo "ERROR : The folder ~/wordpress/wordpress.setup-DO-NOT-DELETE/ doesn't exists."
-	echo "Make sure that folder is present and all the nessesary components are present inside that as it will be used."
-	exit 128
-fi
+===============================
+'
+}
 
-project_folder="$2/$1"
-
-if [[ -d $project_folder ]]
-then
-	echo "ERROR : The project already exists at ( $project_folder )."
-	echo "Please remove the already existing project and try again."
-	exit 128
-fi
-
-
-###############################################
-
-echo 'Just 2 mins please!!'
-start=`date +%s`
-
-
-###############################################
-## Main Process
-
+# \033[1m\033[0m
 
 # Read command line options
 ARGUMENT_LIST=(
-    "wp"
-    "php"
-    "node"
-	"multisite"
-	"multisitetype"
+    "wp:"
+    "php:"
+    "node:"
+	"multisite:"
+	"multisitetype:"
+	"help"
 )
-
-
 
 # read arguments
 opts=$(getopt \
-    --longoptions "$(printf "%s:," "${ARGUMENT_LIST[@]}")" \
+    --longoptions "$(printf "%s," "${ARGUMENT_LIST[@]}")" \
     --name "$(basename "$0")" \
     --options "" \
     -- "$@"
@@ -88,6 +65,11 @@ while true; do
 		shift
 		multisitetype=$1
 		;;
+	--help)
+		shift
+		usage
+		exit 128
+		;;
       --)
         shift
         break
@@ -95,6 +77,49 @@ while true; do
     esac
     shift
 done
+
+if (( $# < 2 )); then
+	echo "ERROR : Inappropriate arguments."
+	echo "Use setup.sh --help for help."
+	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
+	exit 128
+fi
+
+# Check if the supplied path exixts - if not exit.
+
+if [[ ! -d "$2/" ]]
+then
+    echo "ERROR : $2 does not exists on your filesystem."
+	echo "Use setup.sh --help for help."
+	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
+	exit 128
+fi
+
+if [[ ! -d ~/wordpress/wordpress.setup-DO-NOT-DELETE/ ]]
+then
+	echo "ERROR : The folder ~/wordpress/wordpress.setup-DO-NOT-DELETE/ doesn't exists."
+	echo "Make sure that folder is present and all the nessesary components are present inside that as it will be used."
+	exit 128
+fi
+
+project_folder="$2/$1"
+
+if [[ -d $project_folder ]]
+then
+	echo "ERROR : The project already exists at ( $project_folder )."
+	echo "Please remove the already existing project and try again."
+	exit 128
+fi
+
+
+###############################################
+
+echo 'Just 2 mins please!!'
+start=`date +%s`
+
+
+###############################################
+## Main Process
 
 if [ -z "$multisite" ]
 then
