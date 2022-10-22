@@ -46,6 +46,8 @@ if args.vip and args.vip == "yes":
 	userCreateCommand = "wp user create sadmin sadmin@souptik.dev --role=administrator --user_pass=\"sadmin\""
 	userSuperAdminCommand = "wp super-admin add sadmin"
 
+themeInstallCommand = "wp theme install twentytwentytwo --activate"
+
 filename = f"./tmp/.lando.yml"
 landoConfigContent = landoConfigTemplate.render(
 	app=f"{args.appName}",
@@ -55,7 +57,8 @@ landoConfigContent = landoConfigTemplate.render(
 	core_install_command=coreInstallCommand,
 	query_monitor_install_command=queryMonitorInstallCommand,
 	user_create_command=userCreateCommand,
-	user_super_admin_command=userSuperAdminCommand
+	user_super_admin_command=userSuperAdminCommand,
+	theme_install_command=themeInstallCommand
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(landoConfigContent)

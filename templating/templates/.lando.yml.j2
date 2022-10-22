@@ -57,6 +57,7 @@ services:
       - | # Let's check if WordPress is not installed, then install it
         if ! wp core is-installed; then
           {{ core_install_command }}
+          {{ theme_install_command }}
           {{ query_monitor_install_command }}
           {{ user_create_command }}
           {{ user_super_admin_command }}
