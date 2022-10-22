@@ -17,6 +17,9 @@
 After creating a site:
 - Your site will have a username and password(both same) of - `admin`.
 - And the database name will be `wordpress`. And the username will be `wordpress` and password will be also `wordpress`.
+After creating a site with VIP template:
+- Your site will have a username and password(both same) of - `sadmin`.
+- The database name, username and password will be the same as above.
 
 ## Steps to set-up:
 
@@ -49,13 +52,18 @@ git clone git@github.com:Souptik2001/wordpress.setup.git ~/wordpress/wordpress.s
 - Now run `lando start`.
 - Here only you will get a `wp-config.php` file which you can edit as per you wish.
 
+## Arguments:
+
+There are a lot of arguments you can pass in the command to customize the WordPress installation you create, like WordPress, PHP and node version, whether we wan't multisite or not, etc.
+To get a list of all the arguments you can use `./setup.sh --help`
+
 ## TO-DO:
 
 - [x] Ability to add separate `wp-config.php` files for different sites.
 - [x] Add a shell script to complete the setup following the above steps ( only contains basic level of error handling ).
-- [ ] Add far better error handling in the shell script.
-- [ ] The WordPress directory in the project directory should have a only read link to the original WordPress directory so that we get autocompletion.( High Priority)
-- [ ] In the project directory there should be a hard symlink to the wordpress core and the permissions should be only read as written in the above point.
-- [ ] The project should use that hard-symlink as the wordpress core( because that from one project user does't upgrade WordPress core ).
-- [ ] Because of the above point you will not be able to upgrade WordPress from the admin dashboard. For that we have to somehow select that from command line utility. Keep some versions of the wordpress core in the repo. And user can select the one they wish.
-- [ ] Check why the original wp-config is changing and not the copied one.
+- [x] Add far better error handling in the shell script.
+- [x] The WordPress directory in the project directory should have a only read link to the original WordPress directory so that we get autocompletion.( High Priority)
+- [x] In the project directory there should be a hard symlink to the wordpress core and the permissions should be only read as written in the above point.
+- [x] The project should use that hard-symlink as the wordpress core( because that from one project user does't upgrade WordPress core ).
+- [x] Because of the above point you will not be able to upgrade WordPress from the admin dashboard. For that we have to somehow select that from command line utility. Keep some versions of the wordpress core in the repo. And user can select the one they wish.
+- [x] Check why the original wp-config is changing and not the copied one.
