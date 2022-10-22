@@ -58,6 +58,8 @@ services:
         if ! wp core is-installed; then
           {{ core_install_command }}
           {{ query_monitor_install_command }}
+          {{ user_create_command }}
+          {{ user_super_admin_command }}
         fi
 tooling:
   xdebug:

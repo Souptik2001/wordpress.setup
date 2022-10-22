@@ -8,13 +8,17 @@ defaultPHP = "8.0"
 # If this is changed then the default WP version of the setup.sh is also to be changed.
 defaultWP = "6.0.2"
 defaultNode = "16.x"
+defaultMultisite = "no"
+defaultMultisiteType = "subdomain"
+defaultVIP = "no"
 
 parser.add_argument("--appName", help="Website/application name",required=True)
 parser.add_argument("--php", help="PHP version", default=defaultPHP)
 parser.add_argument("--wp", help="WordPress version", default=defaultWP)
 parser.add_argument("--node", help="Node version", default=defaultNode)
-parser.add_argument("--multisite", help="Multisite or not", default=defaultNode, required=True, choices=['yes', 'no'])
-parser.add_argument("--multisiteType", help="Multisite type", default=defaultNode, choices=['subdomain', 'subdirectory'])
+parser.add_argument("--multisite", help="Multisite or not", default=defaultMultisite, required=True, choices=['yes', 'no'])
+parser.add_argument("--vip", help="VIP template or not", default=defaultVIP, required=True, choices=['yes', 'no'])
+parser.add_argument("--multisiteType", help="Multisite type", default=defaultMultisiteType, choices=['subdomain', 'subdirectory'])
 
 args=parser.parse_args()
 
@@ -35,6 +39,13 @@ if args.multisite and args.multisite == "yes":
 	coreInstallCommand = "wp core multisite-install --url=https://$LANDO_APP_NAME.$LANDO_DOMAIN --title=$LANDO_APP_NAME --admin_user=admin --admin_password=admin --admin_email=admin@souptik.dev --skip-email --skip-config"
 	queryMonitorInstallCommand = "wp plugin install query-monitor --activate-network"
 
+userCreateCommand = ""
+
+if args.vip and args.vip == "yes":
+	queryMonitorInstallCommand = ""
+	userCreateCommand = "wp user create sadmin sadmin@souptik.dev --role=administrator --user_pass=\"sadmin\""
+	userSuperAdminCommand = "wp super-admin add sadmin"
+
 filename = f"./tmp/.lando.yml"
 landoConfigContent = landoConfigTemplate.render(
 	app=f"{args.appName}",
@@ -42,7 +53,9 @@ landoConfigContent = landoConfigTemplate.render(
 	wp=f"{wpVer}",
 	node=f"{nodeVer}",
 	core_install_command=coreInstallCommand,
-	query_monitor_install_command=queryMonitorInstallCommand
+	query_monitor_install_command=queryMonitorInstallCommand,
+	user_create_command=userCreateCommand,
+	user_super_admin_command=userSuperAdminCommand
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(landoConfigContent)
@@ -61,6 +74,8 @@ define( 'SITE_ID_CURRENT_SITE', 1 );
 define( 'BLOG_ID_CURRENT_SITE', 1 );
 """
 
+vipConf = ""
+
 if args.multisiteType and args.multisiteType == "subdirectory":
 	multiSiteConf += "define( 'SUBDOMAIN_INSTALL', false );"
 else:
@@ -77,9 +92,25 @@ if args.multisite and args.multisite == "no":
 	--skip-email
 	"""
 
+if args.vip and args.vip == "yes":
+	vipConf = """
+// Load early dependencies
+if ( file_exists( __DIR__ . '/wp-content/mu-plugins/000-pre-vip-config/requires.php' ) ) {
+	require_once __DIR__ . '/wp-content/mu-plugins/000-pre-vip-config/requires.php';
+}
+// // Loading the VIP config file
+if ( file_exists( __DIR__ . '/wp-content/vip-config/vip-config.php' ) ) {
+	require_once __DIR__ . '/wp-content/vip-config/vip-config.php';
+}
+
+// Defining constant settings for file permissions and auto-updates
+define( 'DISALLOW_FILE_MODS', true );
+"""
+
 filename = f"./tmp/wp-config.php"
 wpConfigContent = wpConfigTemplate.render(
-	multisite_conf=multiSiteConf
+	multisite_conf=multiSiteConf,
+	vip_template=vipConf
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(wpConfigContent)

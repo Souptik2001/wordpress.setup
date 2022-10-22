@@ -15,6 +15,7 @@ Arguments:
 --node: Node version.
 --multisite: Whether to create multisite or single site. yes OR no.
 --multisitetype: Type of multisite. subdomain OR subdirectory.
+--vip: Whether to create VIP template site or not. yes OR no.
 --help: Display this help menu.
 
 ===============================
@@ -30,6 +31,7 @@ ARGUMENT_LIST=(
     "node:"
 	"multisite:"
 	"multisitetype:"
+	"vip:"
 	"help"
 )
 
@@ -64,6 +66,10 @@ while true; do
 	--multisitetype)
 		shift
 		multisitetype=$1
+		;;
+	--vip)
+		shift
+		vip=$1
 		;;
 	--help)
 		shift
@@ -131,6 +137,11 @@ then
     multisitetype="subdomain"
 fi
 
+if [ -z "$vip" ]
+then
+	vip="no"
+fi
+
 ## Had to define default WP version here because this is required in other parts of this script also other than just the python line.
 ## If this is changed then the value of defaultWP in the `template.py` script also needs to be changed.
 if [ -z "$wp" ]
@@ -167,7 +178,7 @@ mkdir tmp
 
 # Run the templating script to generate the files..
 
-python template.py --appName=$1 --php=$php --wp=$wp --node=$node --multisite=$multisite --multisiteType=$multisitetype
+python template.py --appName=$1 --php=$php --wp=$wp --node=$node --multisite=$multisite --multisiteType=$multisitetype --vip=$vip
 
 if [ $? -ne 0 ]; then
 	echo "ERROR: Templating script error."
@@ -213,6 +224,18 @@ else
 fi
 
 # If clone fails and `wp-content` is not present then copy this `wp-content` there.
+
+if [[ -d "wp-content/mu-plugins" ]]
+then
+	if [[ ! -d "wp-content/client-mu-plugins" ]]
+	then
+		mv wp-content/mu-plugins wp-content/client-mu-plugins
+	else
+		rm -r wp-content/mu-plugins
+	fi
+fi
+
+git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive ./wp-content/mu-plugins/
 
 ############ Not needed here now, as templating is handled by Jinja.
 
