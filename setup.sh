@@ -3,8 +3,90 @@
 ###############################################
 ## Usage check
 
+usage() {
+	echo -e '
+========== HELP MENU ==========
+
+Usage: \033[1msetup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]\033[0m
+
+Arguments:
+--wp : WordPress version.
+--php: PHP version.
+--node: Node version.
+--multisite: Whether to create multisite or single site. yes OR no.
+--multisitetype: Type of multisite. subdomain OR subdirectory.
+--vip: Whether to create VIP template site or not. yes OR no.
+--help: Display this help menu.
+
+===============================
+'
+}
+
+# \033[1m\033[0m
+
+# Read command line options
+ARGUMENT_LIST=(
+    "wp:"
+    "php:"
+    "node:"
+	"multisite:"
+	"multisitetype:"
+	"vip:"
+	"help"
+)
+
+# read arguments
+opts=$(getopt \
+    --longoptions "$(printf "%s," "${ARGUMENT_LIST[@]}")" \
+    --name "$(basename "$0")" \
+    --options "" \
+    -- "$@"
+)
+
+eval set --$opts
+
+while true; do
+    case "$1" in
+    --wp)
+        shift
+        wp=$1
+        ;;
+    --php)
+        shift
+        php=$1
+        ;;
+    --node)
+        shift
+        node=$1
+        ;;
+	--multisite)
+		shift
+		multisite=$1
+		;;
+	--multisitetype)
+		shift
+		multisitetype=$1
+		;;
+	--vip)
+		shift
+		vip=$1
+		;;
+	--help)
+		shift
+		usage
+		exit 128
+		;;
+      --)
+        shift
+        break
+        ;;
+    esac
+    shift
+done
+
 if (( $# < 2 )); then
 	echo "ERROR : Inappropriate arguments."
+	echo "Use setup.sh --help for help."
 	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
 	exit 128
 fi
@@ -14,6 +96,7 @@ fi
 if [[ ! -d "$2/" ]]
 then
     echo "ERROR : $2 does not exists on your filesystem."
+	echo "Use setup.sh --help for help."
 	echo "Usage : setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]"
 	exit 128
 fi
@@ -44,58 +127,6 @@ start=`date +%s`
 ###############################################
 ## Main Process
 
-
-# Read command line options
-ARGUMENT_LIST=(
-    "wp"
-    "php"
-    "node"
-	"multisite"
-	"multisitetype"
-)
-
-
-
-# read arguments
-opts=$(getopt \
-    --longoptions "$(printf "%s:," "${ARGUMENT_LIST[@]}")" \
-    --name "$(basename "$0")" \
-    --options "" \
-    -- "$@"
-)
-
-eval set --$opts
-
-while true; do
-    case "$1" in
-    --wp)
-        shift
-        wp=$1
-        ;;
-    --php)
-        shift
-        php=$1
-        ;;
-    --node)
-        shift
-        node=$1
-        ;;
-	--multisite)
-		shift
-		multisite=$1
-		;;
-	--multisitetype)
-		shift
-		multisitetype=$1
-		;;
-      --)
-        shift
-        break
-        ;;
-    esac
-    shift
-done
-
 if [ -z "$multisite" ]
 then
     multisite="no"
@@ -104,6 +135,11 @@ fi
 if [ -z "$multisitetype" ]
 then
     multisitetype="subdomain"
+fi
+
+if [ -z "$vip" ]
+then
+	vip="no"
 fi
 
 ## Had to define default WP version here because this is required in other parts of this script also other than just the python line.
@@ -142,7 +178,7 @@ mkdir tmp
 
 # Run the templating script to generate the files..
 
-python template.py --appName=$1 --php=$php --wp=$wp --node=$node --multisite=$multisite --multisiteType=$multisitetype
+python template.py --appName=$1 --php=$php --wp=$wp --node=$node --multisite=$multisite --multisiteType=$multisitetype --vip=$vip
 
 if [ $? -ne 0 ]; then
 	echo "ERROR: Templating script error."
@@ -188,6 +224,18 @@ else
 fi
 
 # If clone fails and `wp-content` is not present then copy this `wp-content` there.
+
+if [[ -d "wp-content/mu-plugins" ]]
+then
+	if [[ ! -d "wp-content/client-mu-plugins" ]]
+	then
+		mv wp-content/mu-plugins wp-content/client-mu-plugins
+	else
+		rm -r wp-content/mu-plugins
+	fi
+fi
+
+git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive ./wp-content/mu-plugins/
 
 ############ Not needed here now, as templating is handled by Jinja.
 
