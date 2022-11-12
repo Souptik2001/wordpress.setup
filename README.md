@@ -62,6 +62,12 @@ git clone git@github.com:Souptik2001/wordpress.setup.git ~/wordpress/wordpress.s
 There are a lot of arguments you can pass in the command to customize the WordPress installation you create, like WordPress, PHP and node version, whether we wan't multisite or not, etc.
 To get a list of all the arguments you can use `./setup.sh --help`
 
+## Memcache support:
+
+Memcache( or persistent object cache ) is present with every site installation. But to use it follow the following steps-
+- Go to `wp-content/plugins/memcached`
+- Copy the file `object-cache.php` to `wp-content` directory.
+
 ## TO-DO:
 
 - [x] Ability to add separate `wp-config.php` files for different sites.
