@@ -6,7 +6,7 @@ parser=argparse.ArgumentParser()
 
 defaultPHP = "8.0"
 # If this is changed then the default WP version of the setup.sh is also to be changed.
-defaultWP = "6.0.2"
+defaultWP = "6.1"
 defaultNode = "16.x"
 defaultMultisite = "no"
 defaultMultisiteType = "subdomain"
@@ -41,6 +41,7 @@ if args.multisite and args.multisite == "yes":
 
 userCreateCommand = ""
 userSuperAdminCommand = ""
+vip_mu_plugins_link = ""
 
 if args.vip and args.vip == "yes":
 	queryMonitorInstallCommand = ""
@@ -59,7 +60,7 @@ landoConfigContent = landoConfigTemplate.render(
 	query_monitor_install_command=queryMonitorInstallCommand,
 	user_create_command=userCreateCommand,
 	user_super_admin_command=userSuperAdminCommand,
-	theme_install_command=themeInstallCommand
+	theme_install_command=themeInstallCommand,
 )
 with open(filename, mode="w", encoding="utf-8") as message:
 	message.write(landoConfigContent)

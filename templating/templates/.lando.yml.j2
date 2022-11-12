@@ -39,7 +39,7 @@ services:
     # build:
     #   - wp core download --version=5.8.3 --force --skip-content
     build_as_root:
-      - pecl install memcache 4.0.5.2
+      - printf "\n" | pecl install memcache 4.0.5.2
       - docker-php-ext-enable memcache
       - curl -sL https://deb.nodesource.com/setup_{{ node }} | bash -
       - apt-get install -y nodejs

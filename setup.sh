@@ -146,7 +146,7 @@ fi
 ## If this is changed then the value of defaultWP in the `template.py` script also needs to be changed.
 if [ -z "$wp" ]
 then
-    wp="6.0.2"
+    wp="6.1"
 fi
 
 # Download WordPress core
@@ -235,8 +235,23 @@ then
 	fi
 fi
 
+# Download VIP mu-plugins if VIP and create a sym-link.
+
+cd ~/wordpress/wordpress.setup-DO-NOT-DELETE
+
 if [ "$vip" == "yes" ]; then
-	git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive ./wp-content/mu-plugins/
+
+	if [[ ! -d "vip-go-mu-plugins" ]]
+	then
+		git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive
+		if [ $? -ne 0 ]; then
+			echo "ERROR: VIP mu-plugins download error."
+			exit 128
+		fi
+	fi
+
+	cp -r ./vip-go-mu-plugins $project_folder/wp-content/mu-plugins
+
 fi
 
 ############ Not needed here now, as templating is handled by Jinja.
