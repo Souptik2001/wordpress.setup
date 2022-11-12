@@ -99,6 +99,12 @@ define( 'WP_ENVIRONMENT_TYPE', 'local' );
 
 {{ multisite_conf }}
 
+$memcached_servers = array(
+    'default' => array(
+        '{{ app }}_memcached_1:11211'
+    )
+);
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

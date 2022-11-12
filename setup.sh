@@ -235,7 +235,9 @@ then
 	fi
 fi
 
-git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive ./wp-content/mu-plugins/
+if [ "$vip" == "yes" ]; then
+	git clone git@github.com:Automattic/vip-go-mu-plugins.git --recursive ./wp-content/mu-plugins/
+fi
 
 ############ Not needed here now, as templating is handled by Jinja.
 
