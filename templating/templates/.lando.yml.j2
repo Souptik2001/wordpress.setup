@@ -10,8 +10,8 @@ config:
     php: .lando/php.ini
     vhosts: .lando/nginx.conf
 services:
-  rediscache:
-    type: redis
+  memcached:
+    type: memcached
   mailhog:
     type: mailhog
     portforward: false
@@ -39,6 +39,8 @@ services:
     # build:
     #   - wp core download --version=5.8.3 --force --skip-content
     build_as_root:
+      - pecl install memcache 4.0.5.2
+      - docker-php-ext-enable memcache
       - curl -sL https://deb.nodesource.com/setup_{{ node }} | bash -
       - apt-get install -y nodejs
     run:
@@ -48,9 +50,10 @@ services:
           echo "Config file already exists."
         else
         wp config create --dbhost=database --dbname=wordpress --dbuser=wordpress --dbpass=wordpress --dbprefix=wp_ --force --extra-php <<PHP
-        \$redis_server = array(
-          'host'     => 'rediscache',
-          'port'     => 6379,
+        \$memcached_servers = array(
+          'default' => array(
+            '{{ app }}_memcached_1:11211'
+          )
         );
         PHP
         fi
@@ -61,6 +64,7 @@ services:
           {{ query_monitor_install_command }}
           {{ user_create_command }}
           {{ user_super_admin_command }}
+          wp plugin install memcached
         fi
 tooling:
   xdebug:

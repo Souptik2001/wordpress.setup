@@ -40,6 +40,7 @@ if args.multisite and args.multisite == "yes":
 	queryMonitorInstallCommand = "wp plugin install query-monitor --activate-network"
 
 userCreateCommand = ""
+userSuperAdminCommand = ""
 
 if args.vip and args.vip == "yes":
 	queryMonitorInstallCommand = ""
@@ -108,10 +109,12 @@ if ( file_exists( __DIR__ . '/wp-content/vip-config/vip-config.php' ) ) {
 
 // Defining constant settings for file permissions and auto-updates
 define( 'DISALLOW_FILE_MODS', true );
+define( 'VIP_GO_APP_ENVIRONMENT', true );
 """
 
 filename = f"./tmp/wp-config.php"
 wpConfigContent = wpConfigTemplate.render(
+	app=f"{args.appName}",
 	multisite_conf=multiSiteConf,
 	vip_template=vipConf
 )

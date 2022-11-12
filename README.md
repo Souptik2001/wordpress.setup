@@ -4,6 +4,11 @@
 
 **Along with the super easy setup one more benefit you will get is that wordpress-core will be present only once, yet providing the flexibility to edit customizable files like `wp-config.php`, `wp-contents` directory, server and php configuration files, etc.**
 
+## Blogs✍
+
+- [WordPress Lando Setup🐳](https://souptik.dev/blog/wordpress-lando-setup)
+- [Update: WordPress Lando Setup v2🐳](https://souptik.dev/blog/wordpress-lando-setup-v2)
+
 ## Before Using:
 
 - Before using my this setup be sure you have the following things installed (External dependencies):
@@ -57,6 +62,12 @@ git clone git@github.com:Souptik2001/wordpress.setup.git ~/wordpress/wordpress.s
 There are a lot of arguments you can pass in the command to customize the WordPress installation you create, like WordPress, PHP and node version, whether we wan't multisite or not, etc.
 To get a list of all the arguments you can use `./setup.sh --help`
 
+## Memcache support:
+
+Memcache( or persistent object cache ) is present with every site installation. But to use it follow the following steps-
+- Go to `wp-content/plugins/memcached`
+- Copy the file `object-cache.php` to `wp-content` directory.
+
 ## TO-DO:
 
 - [x] Ability to add separate `wp-config.php` files for different sites.
@@ -67,3 +78,6 @@ To get a list of all the arguments you can use `./setup.sh --help`
 - [x] The project should use that hard-symlink as the wordpress core( because that from one project user does't upgrade WordPress core ).
 - [x] Because of the above point you will not be able to upgrade WordPress from the admin dashboard. For that we have to somehow select that from command line utility. Keep some versions of the wordpress core in the repo. And user can select the one they wish.
 - [x] Check why the original wp-config is changing and not the copied one.
+- [x] Provide multisite support.
+- [x] Provide VIP site support.
+- [x] Provide memcache support.
