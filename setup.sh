@@ -18,6 +18,8 @@ Arguments:
 --vip: Whether to create VIP template site or not. yes OR no.
 --help: Display this help menu.
 
+Example: \033[1msetup.sh [project_name] ~/wordpress --multisite=yes --vip=yes git@github.com:[repo]\033[0m
+
 ===============================
 '
 }
@@ -146,7 +148,7 @@ fi
 ## If this is changed then the value of defaultWP in the `template.py` script also needs to be changed.
 if [ -z "$wp" ]
 then
-    wp="6.1"
+    wp="6.2.2"
 fi
 
 # Download WordPress core
