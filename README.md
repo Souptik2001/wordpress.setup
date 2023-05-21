@@ -60,7 +60,23 @@ git clone git@github.com:Souptik2001/wordpress.setup.git ~/wordpress/wordpress.s
 ## Arguments:
 
 There are a lot of arguments you can pass in the command to customize the WordPress installation you create, like WordPress, PHP and node version, whether we wan't multisite or not, etc.
-To get a list of all the arguments you can use `./setup.sh --help`
+
+```
+Usage: setup.sh [name_of_the_project] [path/to/the/folder/to/setup/project] [(optional)ssh_or_https_link_to_clone_wp_content_repo]
+
+Arguments:
+--wp : WordPress version.
+--php: PHP version.
+--node: Node version.
+--multisite: Whether to create multisite or single site. yes OR no.
+--multisitetype: Type of multisite. subdomain OR subdirectory.
+--vip: Whether to create VIP template site or not. yes OR no.
+--help: Display this help menu.
+
+Example: setup.sh [project_name] ~/wordpress --multisite=yes --vip=yes --wp=6.2.2 git@github.com:[repo]
+```
+
+Or you can get this help instructions by executing `./setup.sh --help`.
 
 ## Memcache support:
 
